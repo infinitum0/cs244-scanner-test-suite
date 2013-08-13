@@ -1,0 +1,6 @@
+program numbers
+begin
+    relax
+    peter 12345
+    big_num 1234567
+end

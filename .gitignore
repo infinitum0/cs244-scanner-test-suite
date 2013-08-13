@@ -1,0 +1,27 @@
+# Ignore the directory containing symlinks to the different parts of my project
+parts/
+
+# Vim swp files
+*.swp
+# Gedits temp files
+*.~
+# Diffmerge original files
+*.orig
+
+# Object files
+*.o
+
+# Libraries
+*.lib
+*.a
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
