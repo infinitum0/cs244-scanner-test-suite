@@ -5,6 +5,8 @@ import subprocess
 import unittest
 import re
 
+PART1_SOURCE_PATH = "parts/part1"
+
 C_HEADER = '\033[95m'
 C_OKBLUE = '\033[94m'
 C_OKGREEN = '\033[92m'
@@ -140,7 +142,7 @@ def pre_test():
     os.chdir(old)
 
 class Part1Tests():
-    program = 'parts/part1/testscanner_full'
+    program = os.path.join(PART1_SOURCE_PATH,'testscanner_full')
     tests = "tests/"
     
     def assertEqual(self, expected, got):
