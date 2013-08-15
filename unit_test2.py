@@ -131,12 +131,12 @@ def run_command(program, *args):
         except subprocess.CalledProcessError as e:
             return (e.returncode, "")
     except KeyboardInterrupt as e:
-        print "Was running: `{}`, before crashing.".format(program)
+        print_fail("\nWas running: `{}`, before crashing.".format(program))
         
 
 def pre_test():
     old = os.getcwd()
-    os.chdir("parts/part1/")
+    os.chdir(PART1_SOURCE_PATH)
     subprocess.call(["make", "testscanner_full"]);
     os.chmod("testscanner_full", 0755)
     os.chdir(old)
