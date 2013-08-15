@@ -6,6 +6,8 @@ import unittest
 import re
 
 PART1_SOURCE_PATH = "parts/part1"
+#you shouldn't need to change this normally
+PART1_TESTS_PATH = "tests/"
 
 C_HEADER = '\033[95m'
 C_OKBLUE = '\033[94m'
@@ -143,7 +145,7 @@ def pre_test():
 
 class Part1Tests():
     program = os.path.join(PART1_SOURCE_PATH,'testscanner_full')
-    tests = "tests/"
+    tests = PART1_TESTS_PATH
     
     def assertEqual(self, expected, got):
         return expected == got
