@@ -156,7 +156,7 @@ class Part1Tests():
                 print_fail("[FAIL ON RETURN]: {}, {} != {}".format(p[0], result[0] , 0))
                 continue
             if(not self.assertEqual(p[1], result[1])):
-                print_fail("[FAIL ON OUTPUT]: {}\n OUTPUT EXPECTED: `{}`\n BUT GOT OUTPUT: `{}`".format(p[0], p[1], result[1]))
+                print_fail("[FAIL ON OUTPUT]: {}\n OUTPUT EXPECTED:\n`{}`\n BUT GOT OUTPUT:\n`{}`".format(p[0], p[1], result[1]))
                 continue
             print_pass("[PASS]: {}".format(p[0]))
     
