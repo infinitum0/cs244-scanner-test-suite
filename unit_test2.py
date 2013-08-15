@@ -128,7 +128,7 @@ def run_command(program, *args):
             return (0, output.strip())
         except subprocess.CalledProcessError as e:
             return (e.returncode, "")
-    except Exception as e:
+    except KeyboardInterrupt as e:
         print "Was running: `{}`, before crashing.".format(program)
         
 
@@ -165,7 +165,7 @@ class Part1Tests():
         for c, p in enumerate(expected):
             result = run_command(self.program, p[0])
             if(not self.assertNotEqual(0, result[0])):
-                print_fail("[FAIL ON RETURN]: {}, {} != {}".format(p[0], result[0] , 0))
+                print_fail("[FAIL ON RETURN]: {}, {} == {}".format(p[0], result[0] , 0))
             print_pass("[PASS]: {}".format(p[0]))
 
     def run(self):
