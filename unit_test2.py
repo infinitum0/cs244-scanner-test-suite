@@ -5,6 +5,17 @@ import subprocess
 import unittest
 import re
 
+PART1_SOURCE_PATH = "parts/part1"
+#you shouldn't need to change this normally
+PART1_TESTS_PATH = "tests/"
+
+C_HEADER = '\033[95m'
+C_OKBLUE = '\033[94m'
+C_OKGREEN = '\033[92m'
+C_WARNING = '\033[93m'
+C_FAIL = '\033[91m'
+C_ENDC = '\033[0m'
+
 # For your convenience
 class Token:
     TOKEN_EOF=                  0
@@ -68,6 +79,15 @@ class Token:
 
 RESULT_PATTERN =  re.compile("(?P<id>\d+)\{(?P<output>.*?)\}\s")
 
+def print_ok(string):
+    print C_OKBLUE + string + C_ENDC
+
+def print_fail(string):
+    print C_FAIL + string + C_ENDC
+
+def print_pass(string):
+    print C_OKGREEN + string + C_ENDC
+
 def get_files(path):
     '''Returns a list of files with `path`  their relative paths'''
     files = os.listdir(path)
@@ -107,37 +127,60 @@ def run_command(program, *args):
     program = [program]
     program.extend(args)
     try:
-        output = subprocess.check_output(program);
-        return (0, output.strip())
-    except subprocess.CalledProcessError as e:
-        return (e.returncode, "")
+        try:
+            output = subprocess.check_output(program);
+            return (0, output.strip())
+        except subprocess.CalledProcessError as e:
+            return (e.returncode, "")
+    except KeyboardInterrupt as e:
+        print_fail("\nWas running: `{}`, before crashing.".format(program))
+        
 
 def pre_test():
     old = os.getcwd()
-    os.chdir("parts/part1/")
+    os.chdir(PART1_SOURCE_PATH)
     subprocess.call(["make", "testscanner_full"]);
     os.chmod("testscanner_full", 0755)
     os.chdir(old)
 
-class Part1Tests(unittest.TestCase):
-    program = 'parts/part1/testscanner_full'
-    tests = "tests/"
-              
+class Part1Tests():
+    program = os.path.join(PART1_SOURCE_PATH,'testscanner_full')
+    tests = PART1_TESTS_PATH
+    
+    def assertEqual(self, expected, got):
+        return expected == got
+    def assertNotEqual(self, expected, got):
+        return expected != got
+
     def test_pass(self):
         expected = get_pass(self.tests)
         for c, p in enumerate(expected):
             result = run_command(self.program, p[0])
-            self.assertEqual(0, result[0], "[FAIL ON RETURN]: {}, {} != {}\nOUTPUT\n{}".format(p[0], result[0] , 0, result[1]))
-            self.assertEqual(p[1], result[1], "[FAIL ON OUTPUT]: {},\n`{}`\nNOT_EQUAL_TO\n`{}`".format(p[0], result[1],p[1]))
-        
+            if(not self.assertEqual(0, result[0])):
+                print_fail("[FAIL ON RETURN]: {}, {} != {}".format(p[0], result[0] , 0))
+                continue
+            if(not self.assertEqual(p[1], result[1])):
+                print_fail("[FAIL ON OUTPUT]: {}\n OUTPUT EXPECTED:\n`{}`\n BUT GOT OUTPUT:\n`{}`".format(p[0], p[1], result[1]))
+                continue
+            print_pass("[PASS]: {}".format(p[0]))
+    
     def test_fail(self):
         expected = get_fail(self.tests)
         for c, p in enumerate(expected):
             result = run_command(self.program, p[0])
-            self.assertNotEqual(0, result[0], "[FAIL ON RETURN]: {}, {} == {}".format(p[0], result[0] ,0))
+            if(not self.assertNotEqual(0, result[0])):
+                print_fail("[FAIL ON RETURN]: {}, {} == {}".format(p[0], result[0] , 0))
+                if(result[0]==0): print_fail("PROGRAM EXITED WITH OUTPUT:\n `{}`".format(result[1]))
+            print_pass("[PASS]: {}".format(p[0]))
+
+    def run(self):
+        self.test_pass()
+        self.test_fail()
+
 
 if __name__ == "__main__":
     pre_test()
-    unittest.main()
+    test1 = Part1Tests()
+    test1.run()
 
 

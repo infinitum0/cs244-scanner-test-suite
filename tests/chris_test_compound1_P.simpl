@@ -1,0 +1,12 @@
+#17{} 1{letsbreak} 5{} 13{} 4{} 43{} 2{12345} 38{} 11{} 1{something} 24{} 3{hel\\lo \n\t wor\\lds\"} 44{} 1{empty} 30{} 1{string} 41{} 3{}
+
+program letsbreak
+begin
+    if array (12345)
+
+    end
+(*program end (*tri---
+               ++++++ooooovial*) nonesense*)
+
+something = "hel\\lo \n\t wor\\lds\"";
+empty-string:=""
