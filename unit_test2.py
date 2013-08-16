@@ -133,7 +133,7 @@ def run_command(program, *args):
         except subprocess.CalledProcessError as e:
             return (e.returncode, "")
     except KeyboardInterrupt as e:
-        print_fail("\nWas running: `{}`, before crashing.".format(program))
+        return(-129987, "")
         
 
 def pre_test():
@@ -156,6 +156,9 @@ class Part1Tests():
         expected = get_pass(self.tests)
         for c, p in enumerate(expected):
             result = run_command(self.program, p[0])
+            if(result[0]==-129987):
+                print_fail("[PREMATURE TEST EXIT ^C]: {}".format(p[0]))
+                continue
             if(not self.assertEqual(0, result[0])):
                 print_fail("[FAIL ON RETURN]: {}, {} != {}".format(p[0], result[0] , 0))
                 continue
@@ -168,6 +171,9 @@ class Part1Tests():
         expected = get_fail(self.tests)
         for c, p in enumerate(expected):
             result = run_command(self.program, p[0])
+            if(result[0]==-129987):
+                print_fail("[PREMATURE TEST EXIT ^C]: {}".format(p[0]))
+                continue
             if(not self.assertNotEqual(0, result[0])):
                 print_fail("[FAIL ON RETURN]: {}, {} == {}".format(p[0], result[0] , 0))
                 if(result[0]==0): print_fail("PROGRAM EXITED WITH OUTPUT:\n `{}`".format(result[1]))
